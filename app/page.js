@@ -10,7 +10,7 @@ export default function Home() {
   const handleJoin = () => {
     const name = username.trim() === "" ? "anonymous" : username.trim();
 
-    // const meetingId = "meeting-" + Math.random().toString(36).substring(2, 10);
+    // const meetingId = "meeting-" + Math.random().toString(36).substring(2, 10);  for random
     const meetingId = process.env.NEXT_PUBLIC_CALL_ID;
 
     router.push(`/meeting/${meetingId}?name=${encodeURIComponent(name)}`);
