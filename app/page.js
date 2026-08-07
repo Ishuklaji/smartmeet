@@ -8,7 +8,7 @@ export default function Home() {
   const [username, setUsername] = useState("");
 
   const handleJoin = () => {
-    const name = username.trim() === "" ? "anonymous" : username.trim();
+    const name = username.trim() === "" ? "Anonymous" : username.trim();
 
     // const meetingId = "meeting-" + Math.random().toString(36).substring(2, 10);  for random
     const meetingId = process.env.NEXT_PUBLIC_CALL_ID;
