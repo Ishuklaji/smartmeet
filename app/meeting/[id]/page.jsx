@@ -14,4 +14,11 @@ export default function MeetingPage() {
      const [user, setUser] = useState(null);
      const [token, setToken] = useState(null);
      const [error, setError] = useState(null);
+
+      useEffect(() => {
+        setUser({
+          id: name.toLowerCase().replace(/\s+/g, "-"),
+          name,
+        });
+      }, [name]);
 }
