@@ -21,4 +21,21 @@ export default function MeetingPage() {
           name,
         });
       }, [name]);
+
+       useEffect(() => {
+         if (!user) return;
+
+         fetch("/api/token", {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ userId: user.id }),
+         })
+           .then((res) => res.json())
+           .then((data) => {
+             if (data.token) setToken(data.token);
+             else setError("No token returned");
+           })
+           .catch((err) => setError(err.message));
+       }, [user]);
+
 }
