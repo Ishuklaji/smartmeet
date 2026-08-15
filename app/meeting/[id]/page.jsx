@@ -40,4 +40,21 @@ export default function MeetingPage() {
   const handleLeave = () => {
     router.push("/");
   };
+
+   if (error) {
+     return (
+       <div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+         <div className="p-6 bg-red-900/20 border border-red-500 rounded-lg">
+           <p className="text-red-500 font-bold text-lg mb-2">Error</p>
+           <p>{error}</p>
+           <button
+             onClick={() => router.push("/")}
+             className="mt-4 px-4 py-2 bg-red-500 rounded-lg hover:bg-red-600"
+           >
+             Back
+           </button>
+         </div>
+       </div>
+     );
+   }
 }
