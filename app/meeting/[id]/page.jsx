@@ -76,7 +76,7 @@ export default function MeetingPage() {
   return (
     <StreamProvider user={user} token={token}>
       <StreamTheme>
-        {/* <MeetingRoom callId={callId} onLeave={handleLeave} userId={user.id} /> */}
+        <MeetingRoom callId={callId} onLeave={handleLeave} userId={user.id} />
       </StreamTheme>
     </StreamProvider>
   );
