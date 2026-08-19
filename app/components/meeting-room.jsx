@@ -8,3 +8,5 @@ import {
   CallControls,
   StreamTheme,
 } from "@stream-io/video-react-sdk";
+
+import { TranscriptPanel } from "@/app/components/transcript";
