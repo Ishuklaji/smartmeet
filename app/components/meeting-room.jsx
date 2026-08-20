@@ -10,3 +10,5 @@ import {
 } from "@stream-io/video-react-sdk";
 
 import { TranscriptPanel } from "@/app/components/transcript";
+
+import "@stream-io/video-react-sdk/dist/css/styles.css";
