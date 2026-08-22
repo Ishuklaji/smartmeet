@@ -13,4 +13,9 @@ import { TranscriptPanel } from "@/app/components/transcript";
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 
-export default function MeetingRoom({ callId, onLeave, userId }) {}
+export default function MeetingRoom({ callId, onLeave, userId }) {
+
+   const client = useStreamVideoClient();
+   const [call, setCall] = useState(null);
+   const [error, setError] = useState(null);
+}
