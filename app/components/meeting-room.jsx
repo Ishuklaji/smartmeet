@@ -18,4 +18,7 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
    const client = useStreamVideoClient();
    const [call, setCall] = useState(null);
    const [error, setError] = useState(null);
+    const joinedRef = useRef(false);
+    const leavingRef = useRef(false);
+    const callType = "default";
 }
