@@ -21,4 +21,46 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
     const joinedRef = useRef(false);
     const leavingRef = useRef(false);
     const callType = "default";
+
+      useEffect(() => {
+        if (!client) return;
+        if (joinedRef.current) return;
+
+        joinedRef.current = true;
+
+        const init = async () => {
+          try {
+            const myCall = client.call(callType, callId);
+
+            await myCall.getOrCreate({
+              data: {
+                created_by_id: userId,
+                members: [{ user_id: userId, role: "call_member" }],
+              },
+            });
+            await myCall.join();
+
+            await myCall.startClosedCaptions({ language: "en" });
+
+            myCall.on("call.session_ended", () => {
+              console.log("Session ended");
+              onLeave?.();
+            });
+
+            setCall(myCall);
+          } catch (err) {
+            setError(err.message);
+          }
+        };
+
+        init();
+
+        return () => {
+          if (call && !leavingRef.current) {
+            leavingRef.current = true;
+            call.stopClosedCaptions().catch(() => {});
+            call.leave().catch(() => {});
+          }
+        };
+      }, [client, callId, userId]);
 }
