@@ -63,4 +63,24 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
           }
         };
       }, [client, callId, userId]);
+
+      const handleLeaveClick = async () => {
+        if (leavingRef.current) {
+          onLeave?.();
+          return;
+        }
+
+        leavingRef.current = true;
+
+        try {
+          if (call) {
+            await call.stopClosedCaptions().catch(() => {});
+            await call.leave().catch(() => {});
+          }
+        } catch (err) {
+          console.error("Error leaving call:", err);
+        } finally {
+          onLeave?.();
+        }
+      };
 }
