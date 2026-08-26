@@ -83,4 +83,11 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
           onLeave?.();
         }
       };
+
+       if (error)
+         return (
+           <div className="flex items-center justify-center min-h-screen text-white">
+             <p>Error: {error}</p>
+           </div>
+         );
 }
