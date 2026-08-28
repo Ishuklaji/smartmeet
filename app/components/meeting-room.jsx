@@ -14,90 +14,89 @@ import { TranscriptPanel } from "@/app/components/transcript";
 import "@stream-io/video-react-sdk/dist/css/styles.css";
 
 export default function MeetingRoom({ callId, onLeave, userId }) {
+  const client = useStreamVideoClient();
+  const [call, setCall] = useState(null);
+  const [error, setError] = useState(null);
+  const joinedRef = useRef(false);
+  const leavingRef = useRef(false);
+  const callType = "default";
 
-   const client = useStreamVideoClient();
-   const [call, setCall] = useState(null);
-   const [error, setError] = useState(null);
-    const joinedRef = useRef(false);
-    const leavingRef = useRef(false);
-    const callType = "default";
+  useEffect(() => {
+    if (!client) return;
+    if (joinedRef.current) return;
 
-      useEffect(() => {
-        if (!client) return;
-        if (joinedRef.current) return;
+    joinedRef.current = true;
 
-        joinedRef.current = true;
+    const init = async () => {
+      try {
+        const myCall = client.call(callType, callId);
 
-        const init = async () => {
-          try {
-            const myCall = client.call(callType, callId);
+        await myCall.getOrCreate({
+          data: {
+            created_by_id: userId,
+            members: [{ user_id: userId, role: "call_member" }],
+          },
+        });
+        await myCall.join();
 
-            await myCall.getOrCreate({
-              data: {
-                created_by_id: userId,
-                members: [{ user_id: userId, role: "call_member" }],
-              },
-            });
-            await myCall.join();
+        await myCall.startClosedCaptions({ language: "en" });
 
-            await myCall.startClosedCaptions({ language: "en" });
-
-            myCall.on("call.session_ended", () => {
-              console.log("Session ended");
-              onLeave?.();
-            });
-
-            setCall(myCall);
-          } catch (err) {
-            setError(err.message);
-          }
-        };
-
-        init();
-
-        return () => {
-          if (call && !leavingRef.current) {
-            leavingRef.current = true;
-            call.stopClosedCaptions().catch(() => {});
-            call.leave().catch(() => {});
-          }
-        };
-      }, [client, callId, userId]);
-
-      const handleLeaveClick = async () => {
-        if (leavingRef.current) {
+        myCall.on("call.session_ended", () => {
+          console.log("Session ended");
           onLeave?.();
-          return;
-        }
+        });
 
+        setCall(myCall);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    init();
+
+    return () => {
+      if (call && !leavingRef.current) {
         leavingRef.current = true;
+        call.stopClosedCaptions().catch(() => {});
+        call.leave().catch(() => {});
+      }
+    };
+  }, [client, callId, userId]);
 
-        try {
-          if (call) {
-            await call.stopClosedCaptions().catch(() => {});
-            await call.leave().catch(() => {});
-          }
-        } catch (err) {
-          console.error("Error leaving call:", err);
-        } finally {
-          onLeave?.();
-        }
-      };
+  const handleLeaveClick = async () => {
+    if (leavingRef.current) {
+      onLeave?.();
+      return;
+    }
 
-       if (error)
-         return (
-           <div className="flex items-center justify-center min-h-screen text-white">
-             <p>Error: {error}</p>
-           </div>
-         );
+    leavingRef.current = true;
 
-          if (!call)
-            return (
-              <div className="flex items-center justify-center min-h-screen text-white">
-                <div className="text-center">
-                  <div className="animate-spin h-16 w-16 border-t-4 border-blue-500 mx-auto rounded-full" />
-                  <p className="mt-4 text-lg">Loading meeting…</p>
-                </div>
-              </div>
-            );
+    try {
+      if (call) {
+        await call.stopClosedCaptions().catch(() => {});
+        await call.leave().catch(() => {});
+      }
+    } catch (err) {
+      console.error("Error leaving call:", err);
+    } finally {
+      onLeave?.();
+    }
+  };
+
+  if (error)
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        <p>Error: {error}</p>
+      </div>
+    );
+
+  if (!call)
+    return (
+      <div className="flex items-center justify-center min-h-screen text-white">
+        <div className="text-center">
+          <div className="animate-spin h-16 w-16 border-t-4 border-blue-500 mx-auto rounded-full" />
+          <p className="mt-4 text-lg">Loading meeting… Please wait.</p>
+        </div>
+      </div>
+    );
 }
