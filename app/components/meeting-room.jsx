@@ -99,4 +99,32 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
         </div>
       </div>
     );
+
+  return (
+    <StreamTheme>
+      <StreamCall call={call}>
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+          <div className="container mx-auto px-4 py-6 h-screen">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-6 h-full">
+              <div className="flex flex-col gap-4">
+                <div className="flex-1 rounded-xl bg-gray-800 border border-gray-700 overflow-hidden shadow-2xl">
+                  <SpeakerLayout />
+                </div>
+
+                <div className="flex justify-center pb-4">
+                  <div className="bg-gray-800 rounded-full px-8 py-4 border border-gray-700 shadow-xl">
+                    <CallControls onLeave={handleLeaveClick} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden shadow-2xl">
+                <TranscriptPanel />
+              </div>
+            </div>
+          </div>
+        </div>
+      </StreamCall>
+    </StreamTheme>
+  );
 }
