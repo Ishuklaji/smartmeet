@@ -76,8 +76,8 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
         await call.stopClosedCaptions().catch(() => {});
         await call.leave().catch(() => {});
       }
-    } catch (error) {
-      console.error("Error leaving call:", error);
+    } catch (err) {
+      console.error("Error leaving call:", err);
     } finally {
       onLeave?.();
     }
