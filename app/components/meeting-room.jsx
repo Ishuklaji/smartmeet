@@ -17,8 +17,10 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
   const client = useStreamVideoClient();
   const [call, setCall] = useState(null);
   const [error, setError] = useState(null);
+
   const joinedRef = useRef(false);
   const leavingRef = useRef(false);
+
   const callType = "default";
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function MeetingRoom({ callId, onLeave, userId }) {
         await myCall.startClosedCaptions({ language: "en" });
 
         myCall.on("call.session_ended", () => {
-          console.log("Session ended");
+          console.log("Session has been ended");
           onLeave?.();
         });
 
