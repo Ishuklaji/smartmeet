@@ -118,7 +118,7 @@ export function TranscriptPanel() {
         </div>
       </div>
 
-      {/* Transcripts List */}
+      {/* Transcript List */}
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3 bg-gray-850 custom-scrollbar">
         {transcripts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
