@@ -158,7 +158,7 @@ export function TranscriptPanel() {
               Waiting for the transcripts...
             </p>
             <p className="text-gray-500 text-sm max-w-xs">
-              Start speaking something to see live transcription appearing here.
+              Start speaking to see live transcription appearing here.
             </p>
           </div>
         ) : (
